@@ -7,7 +7,9 @@ from diagrams.aws.network import Route53
 with Diagram("Kitesocial architecture", filename="diagram", show=False):
     dns = Route53("kite.social")
     lb = ELB("load balancer")
-    ecs = ECS("app service")
-    db = PostgreSQL("kitesocial_production")
+    with Cluster("ECS"):
+        ecs = ECS("app service")
+    with Cluster("RDS"):
+        db = PostgreSQL("kitesocial_production")
 
     dns >> lb >> ecs >> db
